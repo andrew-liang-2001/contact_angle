@@ -1,0 +1,18 @@
+# Input parameters for water droplet contact angle analysis
+
+# Trajectory file path
+trajectory_file: 'path/to/your/trajectory.xyz'
+
+# Water selection string (MDAnalysis syntax)
+water_selection: 'type O'
+
+# Analysis parameters
+cell_size: 2.0  # Angstrom
+max_radius: 70.0  # Angstrom
+start_frame: 3000
+num_frames: 2000
+min_molecules: 20000
+
+# Output
+output_plot: 'droplet_analysis_plot.png'
+output_data: 'droplet_analysis_results.txt'
