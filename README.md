@@ -8,10 +8,10 @@ Overview
 1. Aggregate selected simulation frames
 2. Evaluates the number density for each cell
 3. For each row of cells, the following $\tanh$ function is fitted to the number density profile as a function of radial distance from the centre of mass:
-$$
+```math
 \rho(r)=A\left(1-\tanh \left(\frac{2\left(r-r_{\mathrm{i}}\right)}{d}\right)\right),
-$$
-of which $r_{\mathrm{i}}, $A$, $d$ are free parameters. In particular, $r_\mathrm{i}$ is the Gibbs equimolar dividing surface, denoting the boundary point for each row of cells.
+```
+of which $r_{\mathrm{i}}$, $A$, $d$ are free parameters. In particular, $r_\mathrm{i}$ is the Gibbs equimolar dividing surface, denoting the boundary point for each row of cells.
 4. Fits a circle to the all $r_\mathrm{i}$ for each row, from which the contact angle is evaluated 
 
 
