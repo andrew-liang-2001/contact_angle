@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
+from .gibbs_dividing_plane import tanh_function, fit_tanh, find_tanh_midpoint
 
 
 def plot_droplet_analysis(
@@ -43,3 +44,57 @@ def plot_droplet_analysis(
     plt.tight_layout()
 
     return fig, ax
+
+
+def plot_radial_density_profiles(
+    density, r_centers, z_centers, num_profile_plots=1, custom_slices=None
+):
+    """
+    Plot radial density profiles with tanh fits.
+
+    Parameters:
+    - density: 2D array of density values
+    - r_centers, z_centers: Coordinates for density plot
+    - num_profile_plots: Number of radial density profile plots to display
+    - custom_slices: List of specific slice indices to plot
+    """
+    if custom_slices is None:
+        plot_indices = np.linspace(
+            0, density.shape[1] - 1, min(num_profile_plots, density.shape[1]), dtype=int
+        )
+    else:
+        if any(idx >= density.shape[1] for idx in custom_slices):
+            raise ValueError(
+                f"One or more custom slice indices exceed the number of available slices ({density.shape[1]})."
+            )
+        plot_indices = custom_slices
+        num_profile_plots = len(plot_indices)
+
+    rows = int(np.ceil(np.sqrt(num_profile_plots)))
+    cols = int(np.ceil(num_profile_plots / rows))
+    fig, axs = plt.subplots(rows, cols, figsize=(cols * 5, rows * 5))
+    axs = axs.ravel() if num_profile_plots > 1 else [axs]
+
+    for i, idx in enumerate(plot_indices):
+        midpoint = find_tanh_midpoint(r_centers, density[:, idx])
+
+        ax = axs[i]
+        ax.plot(r_centers, density[:, idx], "b.")
+
+        if midpoint is not None:
+            r_dense = np.linspace(r_centers[0], r_centers[-1], 1000)
+            popt = fit_tanh(r_centers, density[:, idx])
+            ax.plot(r_dense, tanh_function(r_dense, *popt), "r-", label="Tanh fit")
+            ax.axvline(x=midpoint, color="g", linestyle="--", label="Midpoint")
+
+        ax.set_xlabel("Radial distance (Å)")
+        ax.set_ylabel("Number Density (a.u.)")
+        ax.set_title(f"Slice {idx+1}, z = {z_centers[idx]:.2f} Å")
+        ax.legend()
+
+    # Remove any unused subplots
+    for j in range(num_profile_plots, len(axs)):
+        fig.delaxes(axs[j])
+
+    fig.tight_layout()
+    return fig, axs

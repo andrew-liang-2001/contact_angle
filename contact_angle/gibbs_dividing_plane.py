@@ -23,7 +23,7 @@ def fit_tanh(r, density):
 
 
 def find_tanh_midpoint(r_centers, density_slice):
-    """Find the midpoint of the tanh function fit"""
+    """Find the midpoint of the tanh function fit, which is x_0"""
     popt = fit_tanh(r_centers, density_slice)
     if popt is not None:
         _, x0, _ = popt
