@@ -5,7 +5,7 @@ This Python library is designed to calculate contact angles for a given trajecto
 Overview
 ---
 
-1. Aggregate selected simulation frames
+1. Aggregates selected simulation frames
 2. Evaluates the number density for each cell
 3. For each row of cells, the following $\tanh$ function is fitted to the number density profile as a function of radial distance from the centre of mass:
 ```math
